@@ -44,21 +44,21 @@
                             @can($this->ObjectFilter->getTable().'_show')
                                 <td width="1">
                                     @if($Item->can('show'))
-                                        <i wire:click="viewShow({{$Item->id}})" class="bi bi-eye-fill text-success" style="cursor: pointer" data-toggle="tooltip" data-placement="top" title="{{__('Show'). ' ' . __($this->nameModel())}}"></i>
+                                        <i wire:click="viewShow({{$Item->id}})" class="bi bi-eye-fill text-secondary" style="cursor: pointer" title="{{__('Show'). ' ' . __($this->nameModel())}}"></i>
                                     @endif
                                 </td>
                             @endcan
                             @can($this->ObjectFilter->getTable().'_edit')
                                 <td width="1">
                                     @if($Item->can('edit'))
-                                        <i wire:click="viewEdit({{$Item->id}})" class="bi bi-pencil-fill text-success" style="cursor: pointer" data-toggle="tooltip" data-placement="top" title="{{__('Edit'). ' ' . __($this->nameModel())}}"></i>
+                                        <i wire:click="viewEdit({{$Item->id}})" class="bi bi-pencil-fill text-info" style="cursor: pointer"  title="{{__('Edit'). ' ' . __($this->nameModel())}}"></i>
                                     @endif
                                 </td>
                             @endcan
                             @can($this->ObjectFilter->getTable().'_delete')
                                 <td width="1">
                                     @if($Item->can('delete'))
-                                        <i wire:key="{{$Item->id}}" class="bi bi-trash-fill text-success deleteButton_{{$deletekey}}" style="cursor: pointer" data-toggle="modal" rel="tooltip" data-target="#delete_{{$deletekey}}" data-id="{{$Item->id}}" title="{{__('Delete'). ' ' . __($this->nameModel())}}" ></i>
+                                        <i wire:key="{{$Item->id}}" class="bi bi-trash-fill text-danger deleteButton_{{$deletekey}}" style="cursor: pointer" data-toggle="modal" rel="tooltip" data-target="#delete_{{$deletekey}}" data-id="{{$Item->id}}" title="{{__('Delete'). ' ' . __($this->nameModel())}}" ></i>
                                         <!-- <i wire:key="{{$Item->id}}" class="bi bi-trash-fill text-success" style="cursor: pointer" wire:click="delete({{ $Item->id }})" onclick="confirm(`{{__('Are you sure you want to delete this ligne?')}}`,'sssss') || event.stopImmediatePropagation()" title="{{__('Delete'). ' ' . __($this->nameModel())}}" id="deleteButton"></i> -->
                                     @endif
                                 </td>
@@ -78,6 +78,11 @@
                                                         <a class="text-dark reference" wire:click="viewShow({{$Item->id}})">
                                                     @elseif($ColumnAuto == 'reference' && $ItemTemp != null)
                                                         <a class="text-dark reference" href="{{ route($ItemTemp->getTable().'.show', $ItemTemp->id) }}">
+                                                    @elseif(isset($value['table']['is_image']) && $value['table']['is_image'])
+                                                        <span>
+                                                            <img style="width:27px;" class="rounded" src="{{ $ItemTemp->{$ColumnAuto}  ?? null }}"/>
+                                                        </span>
+                                                        @continue
                                                     @endif
 
                                                     @php($oldItem = $ItemTemp ?? null)
@@ -103,7 +108,7 @@
                                                         @endif
                                                     @endif
                                                     @if ($ColumnAuto == 'reference')
-                                                        </a>
+                                                        </img>
                                                     @endif
                                                 @endforeach
                                             @endforeach

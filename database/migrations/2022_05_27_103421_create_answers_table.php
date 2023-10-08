@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('number_of_reminders');
             $table->biginteger('question_id');
             $table->string('phone', 60);
-            $table->biginteger('contact_id');
+            $table->biginteger('customer_id');
             $table->dateTime('answered_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

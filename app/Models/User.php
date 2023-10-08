@@ -55,4 +55,8 @@ class User extends Authenticatable implements MustVerifyEmail, Auditable
     public function isTwoFactorEnabled(){
         return $this->authy_enabled == 1 ? true : false;
     }
+
+    public function image(){
+        return $this->morphOne(Image::class, 'imageable');
+    }
 }

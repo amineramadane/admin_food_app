@@ -11,11 +11,11 @@ class Answer extends Model
 
     public static $DisplayButtons = ['add' => false, 'show' => false, 'edit' => false, 'create' => false, 'delete' => true, 'import' => false, 'export' => true];
 
-    public $fillable  = ['contact_id', 'question_id', 'status'];
+    public $fillable  = ['customer_id', 'question_id', 'status'];
 
-    public function contact()
+    public function customer()
     {
-        return $this->belongsTo(Contact::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function question()
@@ -38,10 +38,10 @@ class Answer extends Model
     }
 
     public $displayColumns = [
-        'contact_id' => [
+        'customer_id' => [
             'table' => [
                 'column' => [
-                    ['contact', 'full_name'],
+                    ['customer', 'full_name'],
                 ],
                 'title' => 'full name',
             ],

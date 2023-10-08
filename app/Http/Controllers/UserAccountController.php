@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Elmas\Services\Authy;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class UserAccountController extends Controller
@@ -116,7 +118,7 @@ class UserAccountController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function updatePhoto(Request $request){
+    public function __updatePhoto(Request $request){
         $user = auth()->user();
 
         $data = $request->image;
@@ -134,6 +136,40 @@ class UserAccountController extends Controller
         $user->save();
 
         return response()->json(['success'=>'done']);
+    }
+
+    public function updatePhoto(Request $request){
+        $user = auth()->user();
+        $this->validate($request, [
+            'image' => 'required'
+        ]);
+        if ($request->image) {
+
+            $data = $request->image;
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+
+            $data = base64_decode($data);
+            $image_name = time().'.png';
+            // $path = storage_path() . "/app/avatars/" . $image_name;
+            $path = "avatars/" . $image_name;
+            Storage::put($path, $data);
+            // file_put_contents($path, $data);
+            if($user->image){
+                $path1 = parse_url($user->image->path, PHP_URL_PATH); // Get the path part of the URL
+                $filename = basename($path1); // Extract the filename from the path
+
+                Storage::delete('avatars/'. $filename);
+                $user->image->path = $path;
+                $user->image->save();
+                return response()->json(['success'=>'done']);
+            }else{
+                $user->image()->save(Image::make(['path' => $path]));
+                return response()->json(['success'=>'done']);
+            }
+        }else{
+            return response()->json(['error'=>__("User not found!")]);
+        }
     }
 
     /**

@@ -21,7 +21,7 @@ class MigrationSeeder extends Migration
             [ 'id' => 1 ],
             [
                 'name' => 'Admin',
-                'email' => 'admin@gmail.com',
+                'email' => 'admin@test.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'is_superadmin' => true,

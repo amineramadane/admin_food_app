@@ -486,13 +486,13 @@ d="M320 235l-85 85l85 85v-64h149v-42h-149v-64zM192 213v64l85 -85l-85 -85v64h-149
 d="M85 384v-213h342v213h-342zM427 128h85v-43h-512v43h85c-23 0 -42 20 -42 43v213c0 23 19 43 42 43h342c23 0 42 -20 42 -43v-213c0 -23 -19 -43 -42 -43z" />
     <glyph glyph-name="confirmation_number" unicode="confirmation_number" 
 d="M277 331v42h-42v-42h42zM277 235v42h-42v-42h42zM277 139v42h-42v-42h42zM469 299c-23 0 -42 -20 -42 -43s19 -43 42 -43v-85c0 -23 -19 -43 -42 -43h-342c-23 0 -42 20 -42 43v85c24 0 42 20 42 43s-19 43 -42 43v85c0 24 19 43 42 43h342c23 0 42 -19 42 -43v-85z" />
-    <glyph glyph-name="contact_mail" unicode="contact_mail" 
+    <glyph glyph-name="customer_mail" unicode="customer_mail" 
 d="M469 256v128h-170v-128h170zM299 128v21c0 43 -85 66 -128 66s-128 -23 -128 -66v-21h256zM171 384c-35 0 -64 -29 -64 -64s29 -64 64 -64s64 29 64 64s-29 64 -64 64zM469 448c23 0 43 -20 43 -43v-298c0 -23 -20 -43 -43 -43h-426c-23 0 -43 20 -43 43v298
 c0 23 20 43 43 43h426zM448 341l-64 -42l-64 42v22l64 -43l64 43v-22z" />
-    <glyph glyph-name="contact_phone" unicode="contact_phone" 
+    <glyph glyph-name="customer_phone" unicode="customer_phone" 
 d="M381 213c-5 13 -8 28 -8 43s3 30 8 43h35l32 42l-42 43c-28 -21 -49 -50 -59 -85c-4 -14 -6 -28 -6 -43s2 -29 6 -43c10 -34 31 -64 59 -85l42 43l-32 42h-35zM299 128v21c0 43 -85 66 -128 66s-128 -23 -128 -66v-21h256zM171 384c-35 0 -64 -29 -64 -64s29 -64 64 -64
 s64 29 64 64s-29 64 -64 64zM469 448c23 0 43 -20 43 -43v-298c0 -23 -20 -43 -43 -43h-426c-23 0 -43 20 -43 43v298c0 23 20 43 43 43h426z" />
-    <glyph glyph-name="contacts" unicode="contacts" 
+    <glyph glyph-name="customers" unicode="customers" 
 d="M363 149v32c0 36 -71 54 -107 54s-107 -18 -107 -54v-32h214zM256 368c-26 0 -48 -22 -48 -48s22 -48 48 -48s48 22 48 48s-22 48 -48 48zM427 427c23 0 42 -20 42 -43v-256c0 -23 -19 -43 -42 -43h-342c-23 0 -42 20 -42 43v256c0 23 19 43 42 43h342zM85 0v43h342v-43
 h-342zM427 512v-43h-342v43h342z" />
     <glyph glyph-name="content_copy" unicode="content_copy" 
@@ -1045,7 +1045,7 @@ s107 -48 107 -107v-43h21z" />
 d="M181 224l-74 -96h298l-96 128l-74 -96zM448 107c0 -23 -20 -43 -43 -43h-298c-23 0 -43 20 -43 43v298c0 23 20 43 43 43h298c23 0 43 -20 43 -43v-298z" />
     <glyph glyph-name="image_aspect_ratio" unicode="image_aspect_ratio" 
 d="M427 128v256h-342v-256h342zM427 427c23 0 42 -20 42 -43v-256c0 -23 -19 -43 -42 -43h-342c-23 0 -42 20 -42 43v256c0 23 19 43 42 43h342zM256 299v-43h-43v43h43zM171 299v-43h-43v43h43zM341 213v-42h-42v42h42zM341 299v-43h-42v43h42z" />
-    <glyph glyph-name="import_contacts" unicode="import_contacts" 
+    <glyph glyph-name="import_customers" unicode="import_customers" 
 d="M448 117v246c-23 7 -49 10 -75 10c-36 0 -88 -14 -117 -32v-245c29 18 81 32 117 32c26 0 52 -4 75 -11zM373 416c44.2046 0 90.7488 -11.0375 118 -32v-311c0 -5 -6 -11 -11 -11c-2 0 -3 0 -5 1c-30 16 -67 22 -102 22c-36 0 -88 -14 -117 -32c-31 23 -75 32 -117 32
 c-31 0 -73 -9 -102 -23c-2 0 -3 -1 -5 -1c-5 0 -11 5 -11 10v313c31 23 76 32 118 32s86 -9 117 -32c31 23 75 32 117 32z" />
     <glyph glyph-name="import_export" unicode="import_export" 
@@ -1478,7 +1478,7 @@ c26 0 65 -8 96 -22c31 14 70 22 96 22z" />
     <glyph glyph-name="perm_camera_mic" unicode="perm_camera_mic" 
 d="M299 235v85c0 23 -20 43 -43 43s-43 -20 -43 -43v-85c0 -23 20 -43 43 -43s43 20 43 43zM427 405c23 0 42 -19 42 -42v-256c0 -23 -19 -43 -42 -43h-150v45c60 10 107 63 107 126h-43c0 -47 -38 -86 -85 -86s-85 39 -85 86h-43c0 -63 47 -116 107 -126v-45h-150
 c-23 0 -42 20 -42 43v256c0 23 19 42 42 42h68l39 43h128l39 -43h68z" />
-    <glyph glyph-name="perm_contact_calendar" unicode="perm_contact_calendar" 
+    <glyph glyph-name="perm_customer_calendar" unicode="perm_customer_calendar" 
 d="M384 128v21c0 43 -85 66 -128 66s-128 -23 -128 -66v-21h256zM256 384c-35 0 -64 -29 -64 -64s29 -64 64 -64s64 29 64 64s-29 64 -64 64zM405 448c23 0 43 -20 43 -43v-298c0 -23 -20 -43 -43 -43h-298c-24 0 -43 20 -43 43v298c0 23 19 43 43 43h21v43h43v-43h170v43
 h43v-43h21z" />
     <glyph glyph-name="perm_data_setting" unicode="perm_data_setting" 

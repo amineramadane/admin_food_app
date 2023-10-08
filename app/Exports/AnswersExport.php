@@ -40,7 +40,7 @@ class AnswersExport implements FromCollection,WithHeadings,WithColumnFormatting,
     public function map($answers): array
     {
         return [
-            $answers->contact()->first()->full_name,
+            $answers->customer()->first()->full_name,
             $answers->question()->first()->title,
             __(HelperSelects::Answer_STATUS[$answers->status]),
             $answers->answer,

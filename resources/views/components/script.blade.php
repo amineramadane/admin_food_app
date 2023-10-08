@@ -30,7 +30,7 @@
             if(message.updateQueue[0].name && message.updateQueue[0].name.match("Object.") != 'ObjectF') return;
             topbar.config({
                 autoRun      : true, 
-                barThickness : 3,
+                barThickness : 6,
                 barColors    : {
                     '0'      : '#e3342f',
                     '0.3'      : '#bb45ee',

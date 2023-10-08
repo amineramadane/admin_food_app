@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\Image;
 use Illuminate\Support\{Arr, Str, Collection};
 use Illuminate\Support\Facades\{Schema, DB};
 
@@ -27,13 +28,15 @@ trait SinglePageTrait
 
     public $BackgroundColorStatus =
     [
-        '1' => 'DarkGray',
-        '2' => 'DarkOrange',
-        '3' => 'OrangeRed',
-        // '4' => 'Gold',
-        // '5' => 'YellowGreen',
-        // '6' => 'DarkGray',
+        '0' => 'DarkGray',
+        '1' => 'DarkOrange',
+        '2' => 'OrangeRed',
+        '3' => 'Gold',
+        '4' => 'YellowGreen',
+        '5' => 'DarkGray',
     ];
+
+    public $imageMorph;
 
     public function nameModel()             { return Str::replace( '_', ' ', Str::title(Str::singular($this->ObjectFilter->getTable()))); }
 
@@ -99,7 +102,7 @@ trait SinglePageTrait
         if($this->view == 'index') $this->rules = $this->indexRules;
         if($this->view == 'create') $this->rules = array_merge($this->indexRules ?? [], $this->createRules ?? $this->editRules ?? []);
         if($this->view == 'edit') $this->rules = array_merge($this->indexRules ?? [], $this->editRules ?? []);
-        if($this->view == 'show') $this->rules = array_merge($this->indexRules ?? [], $this->showRules ?? []);
+        if($this->view == 'show') $this->rules = array_merge($this->indexRules ?? [], $this->showRules ?? $this->editRules ?? []);
     }
     
     public function save()
@@ -108,13 +111,25 @@ trait SinglePageTrait
         if($this->validate()){
             try {
                 $this->Object->save();
+                if(!empty($this->imageMorph)) {
+                    $path = $this->imageMorph->store('public/images');
+                    if(optional($this->Object->image)->path) {
+                        $this->Object->image()->update(['path' => $path]);
+                    }else {
+                        $this->Object->image()->save(Image::make(['path' => $path]));
+                    }
+                }
+                // if(isset($this->Object->morphImage) && !empty($this->Object->morphImage)) {
+                //     $this->Object->morphImage = $this->image->store('public/images');
+                // }
                 if($this->Object->wasRecentlyCreated) session()->flash('success', __($this->nameModel()) . __('created'));
                 else session()->flash('success', __($this->nameModel()) . __('updated'));
                 DB::commit();
                 $this->viewIndex();
             }catch(\Exception $e) {
                 DB::rollback();
-                session()->flash('error', __("There has been an error!"));
+                session()->flash('error',$e->getMessage());
+                // session()->flash('error', __("There has been an error!"));
             }
         }
     }
@@ -172,7 +187,7 @@ trait SinglePageTrait
             foreach ($this->ObjectFilter->displayColumns as $key => $displayColumn) {
                 if(isset($displayColumn['filter'])){
                     foreach ($displayColumn['filter']['by'] ?? [$key] as $columnName) {
-                        if(!empty($ObjectDotList[$columnName])){
+                        if(isset($ObjectDotList[$columnName]) && (!empty($ObjectDotList[$columnName]) || $ObjectDotList[$columnName] === 0 || $ObjectDotList[$columnName] === '0')){
 
                             [$query, $objectOld] = $this->join($query, $columnName);
                             $loop = explode('.', $columnName);
@@ -198,7 +213,7 @@ trait SinglePageTrait
                                     else $query->whereDate($tableWithColumnName, $ObjectDotList[$columnName]);
                                     break;
                                 default:
-                                    $query->where($tableWithColumnName, $ObjectDotList[$columnName]);
+                                    $query->where($tableWithColumnName,$ObjectDotList[$columnName]);
                                     break;
                             }
                             

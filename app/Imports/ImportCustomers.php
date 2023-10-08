@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\{Contact, Language};
+use App\Models\{Customer, Language};
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use App\Traits\ImportComponentTrait;
@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 use Maatwebsite\Excel\Concerns\{Importable, ToCollection, WithLimit, WithMapping, WithStartRow, WithValidation};
 
-class ImportContacts implements ToCollection, WithStartRow, WithLimit, WithValidation, WithMapping
+class ImportCustomers implements ToCollection, WithStartRow, WithLimit, WithValidation, WithMapping
 {
     use ImportComponentTrait, Importable;
     
@@ -27,7 +27,7 @@ class ImportContacts implements ToCollection, WithStartRow, WithLimit, WithValid
     {
         return [
             '*.' . $this->ColumnToIndex_AfterChange('full_name') => 'nullable',
-            '*.' . $this->ColumnToIndex_AfterChange('phone') => 'required|numeric|notIn:' . implode(',',Contact::where('status', 1)->pluck('phone')->toArray() ?? []),
+            '*.' . $this->ColumnToIndex_AfterChange('phone') => 'required|numeric|notIn:' . implode(',',Customer::where('status', 1)->pluck('phone')->toArray() ?? []),
             '*.' . $this->ColumnToIndex_AfterChange('email') => 'nullable|email|distinct:ignore_case',
             '*.' . $this->ColumnToIndex_AfterChange('language_id') => 'required|in:' . implode(',',Language::pluck('code')->toArray() ?? []),
         ];
@@ -52,7 +52,7 @@ class ImportContacts implements ToCollection, WithStartRow, WithLimit, WithValid
                     elseif (isset($row[$index])) $array[$columnName] = $row[$index];
                 }
 
-                Contact::updateOrCreate(
+                Customer::updateOrCreate(
                     [
                         'status' => 1,
                         'number_times_sent' => 0
@@ -61,7 +61,7 @@ class ImportContacts implements ToCollection, WithStartRow, WithLimit, WithValid
                 );
             }
             DB::commit();
-            session()->flash('success', __('Contact imported!'));
+            session()->flash('success', __('Customer imported!'));
         } catch (\Throwable $th) {
             DB::rollback();
             $str = $th->getMessage();

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->integer('status'); // 1 => disabled , 2 => enabled
-            $table->bigInteger('reminder_time'); // reminder time if the contact does not answer
+            $table->bigInteger('reminder_time'); // reminder time if the customer does not answer
             $table->integer('number_reminders'); // number of reminders
             $table->timestamps();
             $table->softDeletes();

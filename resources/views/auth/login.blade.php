@@ -5,11 +5,11 @@
 <div class="container h-100">
     <div class="row h-100 justify-content-center align-items-center">
         <div class="col-md-5">
-            <div class="text-center">
+            <div class="text-center mb-5">
                 <img style="width: 50%" src="{{ asset('logo.png') }}" alt="logo app">
             </div>
-            <h5 class="text-center mb-4">{{ __('Login') }}</h5>
-            <div class="card">
+            {{-- <h5 class="text-center mb-4">{{ __('Login') }}</h5> --}}
+            <div class="card rounded">
                 <div class="card-body">
                     @if (session('message'))
                         <div class="row">

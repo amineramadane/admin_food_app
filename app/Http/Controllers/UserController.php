@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use OwenIt\Auditing\Models\Audit;
 use App\Elmas\Tools\AuditMessages;
+use App\Models\Image;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -320,22 +322,28 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function updatePhoto(Request $request, $id){
+    public function _updatePhoto(Request $request, $id){
         $user = User::find($id);
 
         if($user){
-            $data = $request->image;
+            // $data = $request->image;
 
-            list($type, $data) = explode(';', $data);
-            list(, $data)      = explode(',', $data);
+            // list($type, $data) = explode(';', $data);
+            // list(, $data)      = explode(',', $data);
 
-            $data = base64_decode($data);
-            $image_name = time().'.png';
-            $path = storage_path() . "/app/avatars/" . $image_name;
+            // $data = base64_decode($data);
+            // $image_name = time().'.png';
 
-            file_put_contents($path, $data);
+            // $path = storage_path() . "/app/avatars/" . $image_name;
 
-            $user->photo = $image_name;
+            // $request->file('image')->store('avatars', []);
+            $newFileName = time() . '_' . uniqid() . $request->file('image')->getClientOriginalExtension();
+
+            $request->file('image')->storeAs('avatars', $newFileName, []);
+
+            // file_put_contents($path, $data);
+
+            $user->photo = 'avatars/'.$newFileName;
             $user->save();
 
             return response()->json(['success'=>'done']);
@@ -343,6 +351,33 @@ class UserController extends Controller
             return response()->json(['error'=>__("User not found!")]);
         }
     }
+    public function updatePhoto(Request $request, $id){
+        $user = User::find($id);
+        $this->validate($request, [
+            'avatar' => 'required|image|mimes:jpeg,jpg,png|dimensions:min_height=300,min_width=300' //,gif,svg |max:1024
+        ]);
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('users');
+            if($user->image){
+                $path1 = parse_url($user->image->path, PHP_URL_PATH); // Get the path part of the URL
+                $filename = basename($path1); // Extract the filename from the path
+
+                Storage::delete('users/'. $filename);
+                $user->image->path = $path;
+                $user->image->save();
+                dd('test');
+                return response()->json(['success'=>'done']);
+            }else{
+                dd('test');
+                $user->image()->save(Image::make(['path' => $path]));
+                return response()->json(['success'=>'done']);
+            }
+        }else{
+            return response()->json(['error'=>__("User not found!")]);
+        }
+    }
+
+    
 
     /**
      * Delete profile photo.

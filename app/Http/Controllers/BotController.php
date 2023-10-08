@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use App\Models\{ Bot, Question, Answer, Contact, Chatlog };
+use App\Models\{ Bot, Question, Answer, Customer, Chatlog };
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 class BotController extends Controller
 {
     /**
-     * api for send welcome message and first question to all contacts
+     * api for send welcome message and first question to all customers
      */
     public function send($id = null)
     {
@@ -32,21 +32,21 @@ class BotController extends Controller
 
             Log::channel('logbot')->info(['api'=> 'bot/send' ,'success' => true, 'message' => 'Start Api']);
 
-            $contacts = Contact::where('status', 1)->where('number_times_sent','<', 3)->get();
+            $customers = Customer::where('status', 1)->where('number_times_sent','<', 3)->get();
 
-            if(empty($contacts->toArray())){
-                Log::channel('logbot')->info(['api'=> 'bot/send' ,'success' => false, 'message' => 'No contacts found to send']);
-                return response()->json([ 'success' => false, 'message' => "No contacts found to send"]);
+            if(empty($customers->toArray())){
+                Log::channel('logbot')->info(['api'=> 'bot/send' ,'success' => false, 'message' => 'No customers found to send']);
+                return response()->json([ 'success' => false, 'message' => "No customers found to send"]);
             }
             
             $data = [];
-            foreach( $contacts as $contact ){
+            foreach( $customers as $customer ){
                 $question = $questionLang = $message = null;
-                $welcome_msg = optional($bot->botmessage()->where(['language_id' => $contact->language_id])->first())->welcome_message;
+                $welcome_msg = optional($bot->botmessage()->where(['language_id' => $customer->language_id])->first())->welcome_message;
                 $question = $bot->question()->where('status', 2)->orderBy('position')->first();
-                if($question) $questionLang = $question->questionlanguage()->where('language_id',$contact->language_id)->first('message');
+                if($question) $questionLang = $question->questionlanguage()->where('language_id',$customer->language_id)->first('message');
                 if($questionLang) $message = $questionLang->message;
-                if($welcome_msg && $message) $data[$contact->id] = [ "id" => $contact->id, "receiver" => $contact->phone, "welcomessage" => $welcome_msg ,"message" => $message ];
+                if($welcome_msg && $message) $data[$customer->id] = [ "id" => $customer->id, "receiver" => $customer->phone, "welcomessage" => $welcome_msg ,"message" => $message ];
             }
             if($data){
                 $response = Http::post($url,$data);
@@ -55,20 +55,20 @@ class BotController extends Controller
                 if(isset($res->success) && $res->success == true){
                     if(isset($res->data->errors)){
                         $error_ids = [];
-                        foreach($res->data->errors as $contact_id){
+                        foreach($res->data->errors as $customer_id){
                             $chatlogs[] = [
-                                'phone' => $data[$contact_id]['receiver'],
-                                'message' => $data[$contact_id]['welcomessage'],
+                                'phone' => $data[$customer_id]['receiver'],
+                                'message' => $data[$customer_id]['welcomessage'],
                                 'type' => 1, // 1 => send , 2 => receive
                                 'status' => 1 // 1 => error , 2 => success
                             ];
                             $chatlogs[] = [
-                                'phone' => $data[$contact_id]['receiver'],
-                                'message' => $data[$contact_id]['message'],
+                                'phone' => $data[$customer_id]['receiver'],
+                                'message' => $data[$customer_id]['message'],
                                 'type' => 1, // 1 => send , 2 => receive
                                 'status' => 1 // 1 => error , 2 => success
                             ];
-                            unset($data[$contact_id]);
+                            unset($data[$customer_id]);
                         }
                     }
                     foreach ($data as $value){
@@ -85,7 +85,7 @@ class BotController extends Controller
                             'status' => 2 // 1 => error , 2 => success
                         ];
                         $answers[] = [
-                            'contact_id' => $value['id'],
+                            'customer_id' => $value['id'],
                             'question_id' => $question->id,
                             'phone' => $value['receiver'],
                             'status' => 1, // 1 => sent, 2 => received, 3 => Expired
@@ -112,15 +112,15 @@ class BotController extends Controller
                 }
                 if($answers) {
                     Answer::whereIn('phone', collect($answers)->pluck('phone')->toArray())->whereIn('status', [0,1])->update(['status' => 3]);
-                    Answer::upsert($answers,['status','number_of_reminders','phone','contact_id','question_id']);
-                    Contact::whereIn('id' ,array_keys($data))->update([
+                    Answer::upsert($answers,['status','number_of_reminders','phone','customer_id','question_id']);
+                    Customer::whereIn('id' ,array_keys($data))->update([
                         'status' => 2,
                         'number_times_sent' => 1,
                         'send_at' => Carbon::now()->format('Y-m-d H:i:s')
                     ]);
                 }
                 if(isset($res->data->errors) && !empty($res->data->errors)) {
-                    Contact::whereIn('id' ,$res->data->errors)->increment('number_times_sent');
+                    Customer::whereIn('id' ,$res->data->errors)->increment('number_times_sent');
                 }
                 if($chatlogs) Chatlog::upsert($chatlogs,['phone','message','type','status']);
                 Log::channel('logbot')->info(['api'=> 'bot/send' , $return_data]);
@@ -162,7 +162,7 @@ class BotController extends Controller
                         'type' => 2, // 1 => send , 2 => receive
                         'status' => 1 // 1 => error , 2 => success
                     ];
-                    if(!$answer || empty($answer->contact())){
+                    if(!$answer || empty($answer->customer())){
                         try{
                             $botMessage = setting('bot.message');
                             if(!empty($botMessage)){
@@ -189,7 +189,7 @@ class BotController extends Controller
                         Log::channel('logbot')->info(['api'=> 'bot/receive' , 'success' => false, 'message' => 'Question\'s not found']);
                         return response()->json([ 'success' => false, 'message' => 'Question\'s not found']);
                     }
-                    $nextQuestion = $question->getNextQuestion($answer->contact()->first()->language_id);
+                    $nextQuestion = $question->getNextQuestion($answer->customer()->first()->language_id);
                     $chatlog = [
                         'phone' => $phone,
                         'type' => 2, // 1 => send , 2 => receive
@@ -214,7 +214,7 @@ class BotController extends Controller
                                 $answer->answer = $message;
                                 $answer->save();
                                 if ( $message <= 6 ) {
-                                    $excuseMessage = $question->bot()->first()->botmessage()->where('language_id',$answer->contact()->first()->language_id)->first('excuse_message')->excuse_message;
+                                    $excuseMessage = $question->bot()->first()->botmessage()->where('language_id',$answer->customer()->first()->language_id)->first('excuse_message')->excuse_message;
                                     $resp = Http::post($url,['receiver' => $phone, 'message' => $excuseMessage]);
                                     $resp = json_decode(optional($resp)->getBody());
                                     if(isset($resp->success) && $resp->success == true){
@@ -237,19 +237,19 @@ class BotController extends Controller
                                     $answer_msg = [
                                         'status' => 1,  // 1 => sent, 2 => received, 3 => Expired
                                         'number_of_reminders' => 0,
-                                        'contact_id' => $answer->contact_id,
+                                        'customer_id' => $answer->customer_id,
                                         'phone' => $answer->phone,
                                         'question_id' => $nextQuestion->question_id,
                                     ];
                                     $sendmessage = optional($nextQuestion)->message ?? null;
                                 }
-                                else $sendmessage = optional($answer->getCancelMsg($answer->contact()->first()->language_id))->message;
+                                else $sendmessage = optional($answer->getCancelMsg($answer->customer()->first()->language_id))->message;
                                 $data = [ 'success' => true, 'message' => 'good response'];
                             }else{
                                 $chatlog['message'] = $message;
                                 $chatlog['status'] = 1;
                                 Chatlog::create($chatlog);
-                                $sendmessage = $question->questionlanguage()->where('language_id', $answer->contact()->first()->language_id)->first()->error_message;
+                                $sendmessage = $question->questionlanguage()->where('language_id', $answer->customer()->first()->language_id)->first()->error_message;
                                 $chatlog['message'] = $sendmessage;
                                 $data = [ 'success' => false, 'message' => 'bad response (1)'];
                             }
@@ -271,7 +271,7 @@ class BotController extends Controller
                                 );
         
                                 if ( $statusChoices[ $message ] == 10 ) {
-                                    $excuseMessage = $question->bot()->first()->botmessage()->where('language_id',$answer->contact()->first()->language_id)->first('excuse_message')->excuse_message;
+                                    $excuseMessage = $question->bot()->first()->botmessage()->where('language_id',$answer->customer()->first()->language_id)->first('excuse_message')->excuse_message;
                                     
                                     $resp = Http::post($url,['receiver' => $phone, 'message' => $excuseMessage]);
                                     $resp = json_decode(optional($resp)->getBody());
@@ -296,19 +296,19 @@ class BotController extends Controller
                                     $answer_msg = [
                                         'status' => 1, // 1 => sent, 2 => received, 3 => Expired
                                         'number_of_reminders' => 0,
-                                        'contact_id' => $answer->contact_id,
+                                        'customer_id' => $answer->customer_id,
                                         'phone' => $answer->phone,
                                         'question_id' => $nextQuestion->question_id,
                                     ];
                                     $sendmessage = optional($nextQuestion)->message;
                                 }
-                                else $sendmessage = $answer->getCancelMsg($answer->contact()->first()->language_id);
+                                else $sendmessage = $answer->getCancelMsg($answer->customer()->first()->language_id);
                                 $data = [ 'success' => true, 'message' => 'good response'];
                             }else{
                                 $chatlog['message'] = $message;
                                 $chatlog['status'] = 1;
                                 Chatlog::create($chatlog);
-                                $sendmessage = $question->questionlanguage()->where('language_id', $answer->contact()->first()->language_id)->first()->error_message;
+                                $sendmessage = $question->questionlanguage()->where('language_id', $answer->customer()->first()->language_id)->first()->error_message;
                                 $data = [ 'success' => false, 'message' => 'bad response (2)'];
                             }
                         }else{
@@ -327,13 +327,13 @@ class BotController extends Controller
                             $answer_msg = [
                                 'status' => 1,  // 1 => sent, 2 => received, 3 => Expired
                                 'number_of_reminders' => 0,
-                                'contact_id' => $answer->contact_id,
+                                'customer_id' => $answer->customer_id,
                                 'phone' => $answer->phone,
                                 'question_id' => $nextQuestion->question_id,
                             ];
                             $sendmessage = $nextQuestion->message;
                         }
-                        else $sendmessage = $answer->getCancelMsg($answer->contact()->first()->language_id);
+                        else $sendmessage = $answer->getCancelMsg($answer->customer()->first()->language_id);
                         $data = [ 'success' => true, 'message' => 'good response'];
                     }else{
                         $chatlog['message'] = $message;
@@ -349,12 +349,12 @@ class BotController extends Controller
                         $chatlog['message'] = $sendmessage;
                     }
                     if(isset($res->success) && $res->success == true){
-                        if(isset($answer_msg)) Answer::upsert($answer_msg,['status','phone','contact_id','question_id']);
+                        if(isset($answer_msg)) Answer::upsert($answer_msg,['status','phone','customer_id','question_id']);
                         $chatlog['status'] = 2;
                     }else{
                         if(isset($answer_msg)){
                             $answer_msg['status'] = 0;
-                            Answer::upsert($answer_msg,['status','phone','contact_id','question_id']);
+                            Answer::upsert($answer_msg,['status','phone','customer_id','question_id']);
                         }
                         $chatlog['status'] = 1;
                     }
@@ -382,7 +382,7 @@ class BotController extends Controller
     }
 
     /**
-     * API for reminder the contact; 
+     * API for reminder the customer; 
      * If the answer is not accepted, an error message will be returned; 
      * If the answer is accepted, the next question will be sent; 
      * If the answer is the last, a farewell message will be answered 
@@ -411,11 +411,11 @@ class BotController extends Controller
                 $question = $questionLang = $message = null;
                 if( false == $question = $answer->question()->first() ) continue;
                 if($bot->id !== $question->bot_id) continue;
-                if( false == $contact = $answer->contact()->first() ) continue;
-                else $questionLang = $question->questionlanguage()->where('language_id',$contact->language_id)->first('message'); 
+                if( false == $customer = $answer->customer()->first() ) continue;
+                else $questionLang = $question->questionlanguage()->where('language_id',$customer->language_id)->first('message'); 
                 $message = $questionLang->message;
                 if($message){
-                    $data[$answer->id] = ["id" => $answer->id, "receiver" => $answer->contact()->first()->phone, "message" => $message ];
+                    $data[$answer->id] = ["id" => $answer->id, "receiver" => $answer->customer()->first()->phone, "message" => $message ];
                     // $answer->updated_at = Carbon::now();
                     // $answer->save();
                 }else continue;

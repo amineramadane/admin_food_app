@@ -115,22 +115,18 @@
                         <div class="profile-photo text-center" id="showPhoto">
                             <div class="thumb thumb-rounded thumb-slide mb-2">
                                 <div id="profilePhotoImg">
-                                    @if($user->photo !== null) 
-                                        <img src="{{url('uploads/avatars/'.$user->photo)}}" alt="">
+                                    @if(isset($user->image->path)) 
+                                        <img src="{{$user->image->path}}" alt="">
                                     @else
-                                        @if($user->social_avatar !== null)
-                                            <img src="{{$user->social_avatar}}" alt="">
-                                        @else
-                                            <img src="{{asset('img/placeholder.png')}}" alt="">
-                                        @endif
+                                        <img src="{{asset('img/placeholder.png')}}" alt="">
                                     @endif
                                 </div>
                                 <div class="caption">
                                     <span>
                                         <a href="#" id="editPhoto" class="btn btn-success btn-round"><i class="material-icons">edit</i></a>
-                                        @if($user->photo !== null)
+                                        {{-- @if($user->photo !== null)
                                             <a href="{{route('account.delete_photo', $user->id)}}" class="btn btn-danger btn-round confirmBtn" data-confirm-message="{{__('Are you sure you want to delete your profile photo?')}}"><i class="material-icons md-18">delete</i></a>
-                                        @endif
+                                        @endif --}}
                                     </span>
                                 </div>
                             </div>

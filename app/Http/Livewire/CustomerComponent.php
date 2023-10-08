@@ -2,18 +2,18 @@
       
 namespace App\Http\Livewire;
 use Livewire\Component;
-use App\Models\{Contact, Language};
+use App\Models\{Customer, Language};
 use HelperSelects;
-use App\Exports\ContactsExport;
+use App\Exports\CustomersExport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ContactComponent extends Component
+class CustomerComponent extends Component
 {
     use \Livewire\WithPagination, \App\Traits\SinglePageTrait;
 
     public function mount($id = null)
     {
-        $this->Model = Contact::class;
+        $this->Model = Customer::class;
 
         $this->mountSync($id);
         $this->mountSyncUrl();
@@ -21,7 +21,7 @@ class ContactComponent extends Component
 
     public function export() 
     {
-        return Excel::download(new ContactsExport($this->dataTable()), __('contacts').'.xlsx');
+        return Excel::download(new CustomersExport($this->dataTable()), __('customers').'.xlsx');
     }
         
     public function render()
@@ -34,12 +34,13 @@ class ContactComponent extends Component
         }
         $this->editRules = [
             'Object.full_name' => '',
-            'Object.phone' => 'required|numeric',
-            // 'Object.phone' => 'required|numeric|unique:contacts,phone,'.optional($this->Object)->id,
+            // 'Object.phone' => 'required|numeric',
+            'Object.phone' => 'required|numeric|unique:customers,phone,'.optional($this->Object)->id,
             'Object.status' => 'required',
             'Object.number_times_sent' => 'required|numeric',
             'Object.email' => '',
             'Object.language_id' => 'required',
+            'Object.morphImage' => '',
             //'Object.send_at_start' => '',
             //'Object.send_at_end' => '',
         ];
@@ -50,8 +51,8 @@ class ContactComponent extends Component
         // List Table
         if($this->view == 'index') $compact['TableList'] = $this->dataTable();
         $compact['ListLang'] = Language::pluck('title', 'id')->toArray();
-        $compact['ListStatus'] =  HelperSelects::Contact_STATUS;
+        $compact['ListStatus'] =  HelperSelects::Customer_STATUS;
         
-        return view('livewire.contact.page', $compact ?? []);
+        return view('livewire.customer.page', $compact ?? []);
     }
 }

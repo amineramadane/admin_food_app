@@ -3,7 +3,10 @@
 @section('content')
 <nav class="navbar navbar-expand-lg navbar-bg">
 	<div class="navbar-brand">
-		<a href="{{route('home')}}" class="text-light">{{setting('app.name')}}</a>
+		<a href="{{route('home')}}" class="text-light">
+			<img src="{{asset('logo.png')}}" class="img-fluid" style="width:40px !important;" alt="">
+			{{setting('app.name')}}
+		</a>
 	</div>
 
 	<div class="d-md-none ml-auto mt-2 mt-lg-0">
@@ -19,7 +22,8 @@
 		<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
 			<li class="nav-item dropdown">
 				<a href="#" class="navbar-nav-link dropdown-toggle text-light" data-toggle="dropdown">
-					{{Auth::user()->email}}
+					<img src="{{Auth::user()->image->path ?? null}}" class="img-fluid" style="width:40px !important;" alt="">
+					{{Auth::user()->name}}
 				</a>
 				<div class="dropdown-menu dropdown-menu-right">
 					<a href="{{route('account.index')}}" class="dropdown-item">
@@ -47,8 +51,14 @@
 
 			<a href="{{route('statistics.index')}}" class="list-group-item list-group-item-action"><i class="material-icons">assessment</i> {{__('Statistics')}}</a>
 			
-			@can('contacts_access')
-				<a href="{{route('contacts.index')}}" class="list-group-item list-group-item-action"><i class="material-icons">perm_contact_calendar</i> {{__('Contacts')}}</a>
+			@can('customers_access')
+				<a href="{{route('customers.index')}}" class="list-group-item list-group-item-action"><i class="material-icons">perm_contact_calendar</i> {{__('Customers')}}</a>
+			@endcan
+			@can('categories_access')
+				<a href="{{route('categories.index')}}" class="list-group-item list-group-item-action"><i class="fas fa-list-ol"></i> {{__('Categories')}}</a>
+			@endcan
+			@can('products_access')
+				<a href="{{route('categories.index')}}" class="list-group-item list-group-item-action"><i class="fas fa-utensils"></i> {{__('Products')}}</a>
 			@endcan
 			@can('answers_access')
 				<a href="{{route('answers.index')}}" class="list-group-item list-group-item-action"><i class="material-icons">question_answer</i> {{__('answers')}}</a>

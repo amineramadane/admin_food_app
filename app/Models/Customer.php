@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\{Model, SoftDeletes, Factories\HasFactory};
 use HelperSelects;
-class Contact extends Model
+class Customer extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -122,6 +122,6 @@ class Contact extends Model
 
     public function status()
     {
-        return HelperSelects::Contact_STATUS[$this->status] ?? '';
+        return HelperSelects::Customer_STATUS[$this->status] ?? '';
     }
 }

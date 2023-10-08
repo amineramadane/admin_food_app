@@ -25,7 +25,7 @@ class CheckBanned
             $user->audits()->latest()->first()->delete();
             $user->audits()->latest()->first()->delete();
 
-            $message = __("Your account has been suspended. Please contact administrator.");
+            $message = __("Your account has been suspended. Please customer administrator.");
 
             return redirect()->route('login')->withMessage($message);
         }

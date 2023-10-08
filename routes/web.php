@@ -90,13 +90,38 @@ Route::middleware($middlewares)->group(function(){
 
 	Route::get('statistics', function () { return view('livewire', ['name' => 'statistic-component']); })->name('statistics.index');
 
-	Route::group(['middleware' => ['permission:contacts_access']], function () {
-		$table  = 'contacts';
-	    Route::get($table.'/create', function () { return view('livewire', ['name' => 'contact-component']); })->name($table.'.create');
-	    Route::get($table.'/{id}', function () { return view('livewire', ['name' => 'contact-component']); })->name($table.'.show');
-	    Route::get($table.'/{id}/edit', function () { return view('livewire', ['name' => 'contact-component']); })->name($table.'.edit');
-		Route::get($table, function () { return view('livewire', ['name' => 'contact-component']); })->name('contacts.index');
+	Route::group(['middleware' => ['permission:customers_access']], function () {
+		$table  = 'customers';
+	    Route::get($table.'/create', function () { return view('livewire', ['name' => 'customer-component']); })->name($table.'.create');
+	    Route::get($table.'/{id}', function () { return view('livewire', ['name' => 'customer-component']); })->name($table.'.show');
+	    Route::get($table.'/{id}/edit', function () { return view('livewire', ['name' => 'customer-component']); })->name($table.'.edit');
+		Route::get($table, function () { return view('livewire', ['name' => 'customer-component']); })->name('customers.index');
 	});
+	
+	Route::group(['middleware' => ['permission:customers_access']], function () {
+		$table  = 'customers';
+	    Route::get($table.'/create', function () { return view('livewire', ['name' => 'customer-component']); })->name($table.'.create');
+	    Route::get($table.'/{id}', function () { return view('livewire', ['name' => 'customer-component']); })->name($table.'.show');
+	    Route::get($table.'/{id}/edit', function () { return view('livewire', ['name' => 'customer-component']); })->name($table.'.edit');
+		Route::get($table, function () { return view('livewire', ['name' => 'customer-component']); })->name('customers.index');
+	});
+
+	Route::group(['middleware' => ['permission:categories_access']], function () {
+		$table  = 'categories';
+	    Route::get($table.'/create', function () { return view('livewire', ['name' => 'category-component']); })->name($table.'.create');
+	    Route::get($table.'/{id}', function () { return view('livewire', ['name' => 'category-component']); })->name($table.'.show');
+	    Route::get($table.'/{id}/edit', function () { return view('livewire', ['name' => 'category-component']); })->name($table.'.edit');
+		Route::get($table, function () { return view('livewire', ['name' => 'category-component']); })->name($table.'.index');
+	});
+
+	Route::group(['middleware' => ['permission:products_access']], function () {
+		$table  = 'products';
+	    Route::get($table.'/create', function () { return view('livewire', ['name' => 'product-component']); })->name($table.'.create');
+	    Route::get($table.'/{id}', function () { return view('livewire', ['name' => 'product-component']); })->name($table.'.show');
+	    Route::get($table.'/{id}/edit', function () { return view('livewire', ['name' => 'product-component']); })->name($table.'.edit');
+		Route::get($table, function () { return view('livewire', ['name' => 'product-component']); })->name($table.'.index');
+	});
+
 	Route::group(['middleware' => ['permission:answers_access']], function () {
 		$table  = 'answers';
 	    // Route::get($table.'/create', function () { return view('livewire', ['name' => 'answer-component']); })->name($table.'.create');

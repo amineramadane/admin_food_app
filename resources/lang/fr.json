@@ -58,7 +58,7 @@
     "Method not allowed.": "Méthode non autorisée.",
     "Resource item not found.": "Élément de ressource introuvable.",
     "Resource not found.": "Ressource introuvable.",
-    "Your account has been suspended. Please contact administrator.": "Votre compte a été suspendu. Veuillez contacter l'administrateur.",
+    "Your account has been suspended. Please customer administrator.": "Votre compte a été suspendu. Veuillez customerer l'administrateur.",
     "Permission created!": "Permission créée!",
     "There has been an error!": "il y a eu une erreur.",
     "Permission not found!": "Permission introuvable!",
@@ -331,14 +331,14 @@
     "Linked Devices":"Appareils liés",
     "Point your phone to this screen to capture the code":"Pointez votre téléphone vers cet écran pour capturer le code",
     "Whatsapp Settings":"Paramètres WhatsApp",
-    "import_excel_contacts":"Importer des contacts",
+    "import_excel_customers":"Importer des customers",
     "description":"Description",
     "title":"Titre",
     "Date send":"Date d'envoi",
     "Date Answered":"Date de réponse",
-    "Contact":"Contact",
-    "Contacts":"Contacts",
-    "contacts":"Contacts",
+    "Customer":"Customer",
+    "Customers":"Customers",
+    "customers":"Customers",
     "Questions":"Questions",
     "choice":"Liste de choix",
     "question_type":"Type question",
@@ -366,6 +366,7 @@
     "Log out":"Se déconnecter",
     "number of reminders":"nombre de rappels",
     "number of time":"fois",
-    "Message was save successfully!": "Le message a été enregistré avec succès !"
-
+    "Message was save successfully!": "Le message a été enregistré avec succès !",
+    "true": "oui",
+    "false": "non"
 }

@@ -14,18 +14,18 @@ use Carbon\Carbon;
 
 use HelperSelects;
 
-class ContactsExport implements FromCollection,WithHeadings,WithColumnFormatting, WithMapping, ShouldAutoSize
+class CustomersExport implements FromCollection,WithHeadings,WithColumnFormatting, WithMapping, ShouldAutoSize
 {
-    protected $contacts;
+    protected $customers;
 
-    public function __construct($contacts)
+    public function __construct($customers)
     {
-        $this->contacts = $contacts;
+        $this->customers = $customers;
     }
 
     public function collection()
     {
-        return $this->contacts;
+        return $this->customers;
     }
 
     public function headings():array{
@@ -39,16 +39,16 @@ class ContactsExport implements FromCollection,WithHeadings,WithColumnFormatting
         ];
     }
 
-    public function map($contact): array
+    public function map($customer): array
     {
-        // dd($contact->created_at);
+        // dd($customer->created_at);
         return [
-            $contact->full_name,
-            $contact->phone,
-            $contact->email,
-            $contact->language()->first()->code,
-            __(HelperSelects::Contact_STATUS[$contact->status]),
-            Date::dateTimeToExcel(Carbon::parse($contact->send_at)),
+            $customer->full_name,
+            $customer->phone,
+            $customer->email,
+            $customer->language()->first()->code,
+            __(HelperSelects::customer_STATUS[$customer->status]),
+            Date::dateTimeToExcel(Carbon::parse($customer->send_at)),
         ];
     }
     

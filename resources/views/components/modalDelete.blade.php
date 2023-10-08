@@ -12,7 +12,10 @@
                 {{-- @if($message)
                     <p>{{ $message }}</p>
                 @else --}}
-                    <p>{{ __('Are you sure you want to delete this ligne?') }}</p>
+                    <div class="text-center" >
+                        <i class="material-icons mr-2 text-danger" style="font-size: 50px;">warning</i>
+                    </div>
+                    <p class="text-center">{{ __('Are you sure you want to delete this ligne?') }}</p>
                 {{-- @endif --}}
             </div>
             <div class="modal-footer">
