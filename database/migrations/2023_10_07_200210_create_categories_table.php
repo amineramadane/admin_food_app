@@ -36,9 +36,6 @@ class CreateCategoriesTable extends Migration
 
         Permission::insert($permissions);
 
-        collect($permissions)->map(function($item) {
-            Role::find(1)->givePermissionTo($item['name']);
-        });
     }
 
     /**

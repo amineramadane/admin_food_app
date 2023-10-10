@@ -47,7 +47,7 @@
 	<!-- Sidebar -->
 	<div class="sidebar border-right" id="sidebar-wrapper">
 		<div class="list-group list-group-flush">
-			<a href="{{route('dashboard')}}" class="list-group-item list-group-item-action"><i class="material-icons">home</i> {{__('Dashboard')}}</a>
+			{{-- <a href="{{route('dashboard')}}" class="list-group-item list-group-item-action"><i class="material-icons">home</i> {{__('Dashboard')}}</a> --}}
 
 			<a href="{{route('statistics.index')}}" class="list-group-item list-group-item-action"><i class="material-icons">assessment</i> {{__('Statistics')}}</a>
 			
@@ -58,18 +58,8 @@
 				<a href="{{route('categories.index')}}" class="list-group-item list-group-item-action"><i class="fas fa-list-ol"></i> {{__('Categories')}}</a>
 			@endcan
 			@can('products_access')
-				<a href="{{route('categories.index')}}" class="list-group-item list-group-item-action"><i class="fas fa-utensils"></i> {{__('Products')}}</a>
+				<a href="{{route('products.index')}}" class="list-group-item list-group-item-action"><i class="fas fa-utensils"></i> {{__('Products')}}</a>
 			@endcan
-			@can('answers_access')
-				<a href="{{route('answers.index')}}" class="list-group-item list-group-item-action"><i class="material-icons">question_answer</i> {{__('answers')}}</a>
-			@endcan
-			@can('chatlogs_access')
-				<a href="{{route('chatlogs.index')}}" class="list-group-item list-group-item-action"><i class="material-icons">message</i> {{__('chatlogs')}}</a>
-			@endcan
-			@can('bots_access')
-				<a href="{{route('bots.index')}}" class="list-group-item list-group-item-action"><i class="material-icons">bubble_chart</i> {{__('bots')}}</a>
-			@endcan
-
 			<a href="#submenu1" class="list-group-item list-group-item-action pb-1" data-toggle="collapse">
 				<i class="material-icons">apps</i>
 				{{__('Gestion Utilisateur')}}

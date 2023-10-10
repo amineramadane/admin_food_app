@@ -29,17 +29,6 @@
                 @enderror
             </div>
         </div>
-        <div class="form-group row">
-            <div class="col-md-2">{{ __('language') }}</div>
-            <div class="col-md-7">
-
-                <select wire:model="Object.language_id" class="form-control">
-                    @foreach ($ListLang as $key => $value)
-                        <option value="{{ $key }}">{{ $value }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
 
         <div class="form-group row">
             <div class="col-md-12 text-right">

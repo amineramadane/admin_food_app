@@ -36,15 +36,15 @@
         
         
         @if ($view == 'index')
-            @if(!empty($dataBot))
-                @foreach ($dataBot as $keyQue => $dataQue)
+            @if(!empty($allData))
+                <div class="row">
+                @foreach ($allData as $dataKey => $dataValue)
                     @php( $chartkey = uniqid() )
-                    @if($dataQue['question']->question_type == 1)
-                        @include('components.statistic.npsChart',['chartkey' => $chartkey, 'data' => $dataQue])
-                    @else
-                        @include('components.statistic.pieChart',['chartkey' => $chartkey, 'data' => $dataQue])
-                    @endif
+                    <div class="col-md-6">
+                        @include('components.statistic.pieChart',['chartkey' => $chartkey, 'data' => $dataValue])
+                    </div>
                 @endforeach
+                </div>
             @else
                 <div class="card shadow-sm p-3 mb-5 bg-white rounded">
                     <div class="card-body row d-flex justify-content-center">

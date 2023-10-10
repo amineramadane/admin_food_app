@@ -18,12 +18,6 @@ use App\Observers\SuiviFabricationObserve;
 use App\Observers\OrdreFabricationObserve;
 use App\Observers\PosteChargeObserve;
 
-use App\Observers\BotObserver;
-use App\Models\Bot;
-
-use App\Observers\QuestionObserver;
-use App\Models\Question;
-
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -55,7 +49,5 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-        Question::observe(QuestionObserver::class);
-        Bot::observe(BotObserver::class);
     }
 }

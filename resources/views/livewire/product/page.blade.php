@@ -5,9 +5,7 @@
     @include('components.page_header')
 
     <div class="content">
-
         @include('components.message')
-
         @if ($view == 'index')
             <div class="d-flex justify-content-end mb-2">
                 @can($this->ObjectFilter->getTable().'_export')
@@ -24,11 +22,11 @@
             @include('components.modalDelete',['deletekey' => $deletekey ])
             @include('components.index',['deletekey' => $deletekey ])
         @elseif ($view == 'create')
-            @include('livewire.answer.edit')
+            @include('livewire.product.edit')
         @elseif ($view == 'edit')
-            @include('livewire.answer.edit')
+            @include('livewire.product.edit')
         @elseif ($view == 'show')
-            @include('livewire.answer.show')
+            @include('livewire.product.show')
         @endif
     </div>
 

@@ -35,8 +35,8 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->float('ht_price');
             $table->integer('vat_rate')->default(0);
-            $table->integer('price');
-            $table->integer('prepareTime')->nullable();
+            $table->integer('price')->nullable();
+            $table->integer('prepareTime');
             $table->integer('active')->default(true);
 
             $table->timestamps();
@@ -54,10 +54,6 @@ class CreateProductsTable extends Migration
         );
 
         Permission::insert($permissions);
-
-        collect($permissions)->map(function($item) {
-            Role::find(1)->givePermissionTo($item['name']);
-        });
     }
 
     /**

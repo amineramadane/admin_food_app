@@ -27,9 +27,8 @@ class ImportCustomers implements ToCollection, WithStartRow, WithLimit, WithVali
     {
         return [
             '*.' . $this->ColumnToIndex_AfterChange('full_name') => 'nullable',
-            '*.' . $this->ColumnToIndex_AfterChange('phone') => 'required|numeric|notIn:' . implode(',',Customer::where('status', 1)->pluck('phone')->toArray() ?? []),
+            '*.' . $this->ColumnToIndex_AfterChange('phone') => 'required|numeric|notIn:' . implode(',',Customer::pluck('phone')->toArray() ?? []),
             '*.' . $this->ColumnToIndex_AfterChange('email') => 'nullable|email|distinct:ignore_case',
-            '*.' . $this->ColumnToIndex_AfterChange('language_id') => 'required|in:' . implode(',',Language::pluck('code')->toArray() ?? []),
         ];
     }
 
@@ -37,7 +36,6 @@ class ImportCustomers implements ToCollection, WithStartRow, WithLimit, WithVali
         'full_name'  => 0,
         'phone'       => 1,
         'email'       => 2,
-        'language_id' => 3,
     ];
 
     public function collection(Collection $rows)
@@ -48,14 +46,12 @@ class ImportCustomers implements ToCollection, WithStartRow, WithLimit, WithVali
             $array = [];
             foreach ($rows as $row) {
                 foreach ($this->orderList as $columnName => $index){
-                    if ($columnName == 'language_id') $array['language_id'] = Language::pluck('id','code')->toArray()[$row[$index]] ?: null;
-                    elseif (isset($row[$index])) $array[$columnName] = $row[$index];
+                    if (isset($row[$index])) $array[$columnName] = $row[$index];
                 }
 
                 Customer::updateOrCreate(
                     [
-                        'status' => 1,
-                        'number_times_sent' => 0
+                        
                     ],
                     $array ?? []
                 );

@@ -351,24 +351,33 @@ class UserController extends Controller
             return response()->json(['error'=>__("User not found!")]);
         }
     }
+
     public function updatePhoto(Request $request, $id){
         $user = User::find($id);
         $this->validate($request, [
-            'avatar' => 'required|image|mimes:jpeg,jpg,png|dimensions:min_height=300,min_width=300' //,gif,svg |max:1024
+            'image' => 'required'
         ]);
-        if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('users');
+        if ($request->image) {
+
+            $data = $request->image;
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+
+            $data = base64_decode($data);
+            $image_name = time().'.png';
+            // $path = storage_path() . "/app/avatars/" . $image_name;
+            $path = "avatars/" . $image_name;
+            Storage::put($path, $data);
+            // file_put_contents($path, $data);
             if($user->image){
                 $path1 = parse_url($user->image->path, PHP_URL_PATH); // Get the path part of the URL
                 $filename = basename($path1); // Extract the filename from the path
 
-                Storage::delete('users/'. $filename);
+                Storage::delete('avatars/'. $filename);
                 $user->image->path = $path;
                 $user->image->save();
-                dd('test');
                 return response()->json(['success'=>'done']);
             }else{
-                dd('test');
                 $user->image()->save(Image::make(['path' => $path]));
                 return response()->json(['success'=>'done']);
             }

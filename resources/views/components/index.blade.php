@@ -79,7 +79,7 @@
                                                     @elseif($ColumnAuto == 'reference' && $ItemTemp != null)
                                                         <a class="text-dark reference" href="{{ route($ItemTemp->getTable().'.show', $ItemTemp->id) }}">
                                                     @elseif(isset($value['table']['is_image']) && $value['table']['is_image'])
-                                                        <span>
+                                                        <span class="pl-2">
                                                             <img style="width:27px;" class="rounded" src="{{ $ItemTemp->{$ColumnAuto}  ?? null }}"/>
                                                         </span>
                                                         @continue
@@ -93,14 +93,13 @@
                                                     @endif
 
                                                     @if($loop->last)
-                                                        @if ($Column == 'status')
-                                                            @if (isset($value['table']['columnColor']) && isset($this->BackgroundColorStatus[$oldItem[$value['table']['columnColor']]]))
+                                                        @if ($Column == 'status' || isset($value['table']['columnColor']) && isset($this->BackgroundColorStatus[$oldItem[$value['table']['columnColor']]]))
                                                                 <label class="rounded-pill px-2 text-white" style="{{ $ItemTemp != null ? 'background-color:'.$this->BackgroundColorStatus[$oldItem[$value['table']['columnColor']]] : '' }}">
                                                                     {{ $ItemTemp }}
                                                                 </label>
-                                                            @else
+                                                            {{-- @else
                                                                 {{ $ItemTemp }}
-                                                            @endif
+                                                            @endif --}}
                                                         @elseif (Str::contains($ColumnAuto, ['date', '_at']))
                                                             {{ $ItemTemp == null ? '' : date('d-m-Y', strtotime($ItemTemp)) }}
                                                         @else

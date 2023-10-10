@@ -32,7 +32,7 @@ class CategoriesExport implements FromCollection,WithHeadings, WithMapping, Shou
         return [
             __('name'),
             __('active'),
-            __('descriptons'),
+            __('descripton'),
         ];
     }
 
@@ -42,7 +42,7 @@ class CategoriesExport implements FromCollection,WithHeadings, WithMapping, Shou
         return [
             $category->name,
             __(HelperSelects::Boolean[$category->active]),
-            $category->descriptons,
+            $category->descripton,
         ];
     }
     

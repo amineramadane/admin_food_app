@@ -26,7 +26,7 @@ class AuthController extends Controller
 
 	    if ($validator->fails())
 	    {
-	        return response(['errors'=>$validator->errors()->all()], 422);
+	        return response()->json(['errors'=>$validator->errors()->all()], 404);
 	    }
 
 	    $data = $request->all();
@@ -44,7 +44,14 @@ class AuthController extends Controller
             }
         }
 
-        return response()->json(['message' => __("User created!")], 200);
+        $credentials = request(['email', 'password']);
+        if(!Auth::attempt($credentials)) {
+        	return response()->json(['message' => trans('auth.failed')], 401);
+        }
+
+        $token = auth()->user()->createToken(setting('app.name').' Password Grant Client')->accessToken;
+
+        return response()->json(['token' => $token, 'user' => auth()->user(), 'message' => 'Hello '.auth()->user()->name ], 200);
     }
 
     /**
@@ -65,7 +72,7 @@ class AuthController extends Controller
 
         $token = auth()->user()->createToken(setting('app.name').' Password Grant Client')->accessToken;
 
-        return response()->json(['token' => $token], 200);
+        return response()->json(['token' => $token, 'user' => auth()->user(), 'message' => 'Hello '.auth()->user()->name], 200);
     }
 
     /**

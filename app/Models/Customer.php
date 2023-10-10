@@ -72,44 +72,16 @@ class Customer extends Model
             ],
         ],
 
-        'language_id' => [
-            'table' => [
-                'column' => [
-                    ['language','title'],
-                ],
-                'title' => 'Language',
-            ],
 
-            'filter' => [
-                'by' => ['language_id'],
-                'type' => 'select',
-                'placeholder' => 'Language',
-                'list' => 'ListLang',
-                'pos' => 4,
-            ],
-        ],
-        'status' => [
+        'created_at' => [
             'table' => [
-                'column' => [['status()']],
-                'columnColor' => 'status',
-                'title' => 'Status',
+                'column' => [['created_at']],
+                'title' => 'created at'
             ],
             'filter' => [
-                'type' => 'select',
-                'placeholder' => 'status',
-                'list' => 'ListStatus',
-                'pos' => 3,
-            ],
-        ],
-        'send_at' => [
-            'table' => [
-                'column' => [['send_at']],
-                'title' => 'Sending Date'
-            ],
-            'filter' => [
-                'placeholder' => 'Sending Date',
+                'placeholder' => 'created at',
                 'type' => 'dateRange',
-                'by' => ['send_at_start', 'send_at_end'],
+                'by' => ['created_at_start', 'created_at_end'],
             ],
         ],
 

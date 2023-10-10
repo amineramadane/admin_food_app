@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BasketController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 
 /*
@@ -40,8 +42,21 @@ if(setting('app.enable_api')){
 		Route::group(['middleware' => ['role:admin']], function () {
 			Route::get('settings', 'API\SettingsController@index');
 		});
+
+		Route::get('categories', 'CategoryController@index');
+		Route::get('products', 'ProductController@index');
+		Route::get('get_home_products', 'ProductController@getHomeProducts');
+		Route::get('get_products_by_category/{category_id}', 'ProductController@getProductsByCategory');
+		Route::post('baskets/add_to_basket', [BasketController::class, 'addToBasket']);
+		Route::get('baskets/get_basket_details', [BasketController::class, 'getBasketDetails']);
+		Route::apiResource('baskets', BasketController::class);
+		
+		Route::post('orders/confirm_order', [OrderController::class, 'ConfirmOrder']);
+		Route::get('orders/get_Prev_orders', [OrderController::class, 'getPrevOrders']);
 	});
 }
+
+
 
 Route::get('bot/send/{id}', 'BotController@send');
 Route::post('bot/receive/{id}', 'BotController@receive');

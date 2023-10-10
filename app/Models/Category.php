@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\{Model, SoftDeletes, Factories\HasFactory};
 use HelperSelects;
 
-use function PHPSTORM_META\type;
 
 class Category extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $appends = ['pathImage'];
+    protected $appends = ['pathImage', 'category'];
 
     public static $DisplayButtons = ['show' => true, 'edit' => true, 'create' => true, 'delete' => true, 'import' => false, 'export' => false];
 
@@ -52,7 +51,7 @@ class Category extends Model
         'active' => [
             'table' => [
                 'column' => [['activeOrInactive()']],
-                'columnColor' => 'status',
+                'columnColor' => 'active',
                 'title' => 'Active',
             ],
             'filter' => [
@@ -94,6 +93,9 @@ class Category extends Model
 
     public function getPathImageAttribute($value) {
         return optional($this->image)->path;
+    }
+    public function getCategoryAttribute($value) {
+        return $this->name;
     }
 
 

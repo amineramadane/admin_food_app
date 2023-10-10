@@ -11,16 +11,10 @@
     <li class="nav-item">
         <a class="nav-link @if(Route::getCurrentRoute()->getName() == 'settings.email') active @endif" href="{{route('settings.email')}}">{{__('Email Settings')}}</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link @if(Route::getCurrentRoute()->getName() == 'settings.whatsapp') active @endif" href="{{route('settings.whatsapp')}}">{{__('Whatsapp Settings')}}</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @if(Route::getCurrentRoute()->getName() == 'settings.bot') active @endif" href="{{route('settings.bot')}}">{{__('Bot Settings')}}</a>
-    </li>
     {{-- <li class="nav-item">
         <a class="nav-link @if(Route::getCurrentRoute()->getName() == 'settings.two-factor') active @endif" href="{{route('settings.two-factor')}}">{{__('Two Factor Authentication')}}</a>
-    </li> --}}
-    {{-- <li class="nav-item">
+    </li>
+    <li class="nav-item">
         <a class="nav-link @if(Route::getCurrentRoute()->getName() == 'settings.recaptcha') active @endif" href="{{route('settings.recaptcha')}}">{{__('reCAPTCHA')}}</a>
     </li> --}}
 </ul>

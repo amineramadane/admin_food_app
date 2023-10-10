@@ -2,7 +2,7 @@
       
 namespace App\Http\Livewire;
 use Livewire\Component;
-use App\Models\{Customer, Language};
+use App\Models\{Customer};
 use HelperSelects;
 use App\Exports\CustomersExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -32,25 +32,22 @@ class CustomerComponent extends Component
             $this->Object->number_times_sent ??= 0;
             $this->Object->language_id ??= 1;
         }
+        
         $this->editRules = [
             'Object.full_name' => '',
-            // 'Object.phone' => 'required|numeric',
             'Object.phone' => 'required|numeric|unique:customers,phone,'.optional($this->Object)->id,
             'Object.status' => 'required',
             'Object.number_times_sent' => 'required|numeric',
             'Object.email' => '',
-            'Object.language_id' => 'required',
             'Object.morphImage' => '',
-            //'Object.send_at_start' => '',
-            //'Object.send_at_end' => '',
         ];
+
         $this->renderSync();
         $this->renderSyncUrl();
         $this->renderSyncRules();
 
         // List Table
         if($this->view == 'index') $compact['TableList'] = $this->dataTable();
-        $compact['ListLang'] = Language::pluck('title', 'id')->toArray();
         $compact['ListStatus'] =  HelperSelects::Customer_STATUS;
         
         return view('livewire.customer.page', $compact ?? []);

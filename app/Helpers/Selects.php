@@ -20,13 +20,34 @@ class Selects
         1 => 'Number' , 
         // 2 => 'Text'
     ];
+
     public const QuestionTypes = [  
         1 => 'NPS' , 
         2 => 'Choices', 
         // 3 => 'Text'
     ];
+
     public const positiveORnegative = [  
         10 => 'negative' , 
         20 => 'positive'
+    ];
+
+    public const VatRates = [
+        0,
+        5,
+        10,
+    ];
+
+    public const StatusBasket = [
+        'onhold',
+        'valid',
+        'canceled'
+    ];
+
+    public const StatusOrder = [
+        'onhold',
+        'preparing',
+        'delivering',
+        'delivered'
     ];
 }

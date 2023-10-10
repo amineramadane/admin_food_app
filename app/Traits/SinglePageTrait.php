@@ -23,17 +23,17 @@ trait SinglePageTrait
     public $view = 'index';
     public $sortColumn = 'created_at';
     public $sortDirection = 'DESC';
-    public $perPage = 20;
+    public $perPage = 6;
     public $DisplayButtons = ['add' => true, 'edit' => true, 'create' => true, 'delete' => true, 'show' => true, 'export' => true, 'import' => true];
 
     public $BackgroundColorStatus =
     [
-        '0' => 'DarkGray',
-        '1' => 'DarkOrange',
-        '2' => 'OrangeRed',
-        '3' => 'Gold',
-        '4' => 'YellowGreen',
-        '5' => 'DarkGray',
+        0 => 'DarkGray',
+        1 => 'DarkOrange',
+        2 => 'OrangeRed',
+        3 => 'Gold',
+        4 => 'YellowGreen',
+        5 => 'DarkGray',
     ];
 
     public $imageMorph;
@@ -125,6 +125,7 @@ trait SinglePageTrait
                 if($this->Object->wasRecentlyCreated) session()->flash('success', __($this->nameModel()) . __('created'));
                 else session()->flash('success', __($this->nameModel()) . __('updated'));
                 DB::commit();
+                $this->imageMorph = null;
                 $this->viewIndex();
             }catch(\Exception $e) {
                 DB::rollback();

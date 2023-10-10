@@ -33,9 +33,7 @@ class CustomersExport implements FromCollection,WithHeadings,WithColumnFormattin
             __('full_name'),
             __('Phone'),
             __('Email'),
-            __('language'),
-            __('Status'),
-            __('Sending Date')
+            __('created at'),
         ];
     }
 
@@ -46,9 +44,7 @@ class CustomersExport implements FromCollection,WithHeadings,WithColumnFormattin
             $customer->full_name,
             $customer->phone,
             $customer->email,
-            $customer->language()->first()->code,
-            __(HelperSelects::customer_STATUS[$customer->status]),
-            Date::dateTimeToExcel(Carbon::parse($customer->send_at)),
+            Date::dateTimeToExcel(Carbon::parse($customer->created_at)),
         ];
     }
     
@@ -56,7 +52,7 @@ class CustomersExport implements FromCollection,WithHeadings,WithColumnFormattin
     {
         return [
             'B' => '0#" "##" "##" "##" "##',
-            'F' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'D' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
 }

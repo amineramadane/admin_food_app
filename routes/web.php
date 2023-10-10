@@ -121,47 +121,4 @@ Route::middleware($middlewares)->group(function(){
 	    Route::get($table.'/{id}/edit', function () { return view('livewire', ['name' => 'product-component']); })->name($table.'.edit');
 		Route::get($table, function () { return view('livewire', ['name' => 'product-component']); })->name($table.'.index');
 	});
-
-	Route::group(['middleware' => ['permission:answers_access']], function () {
-		$table  = 'answers';
-	    // Route::get($table.'/create', function () { return view('livewire', ['name' => 'answer-component']); })->name($table.'.create');
-	    // Route::get($table.'/{id}', function () { return view('livewire', ['name' => 'answer-component']); })->name($table.'.show');
-	    // Route::get($table.'/{id}/edit', function () { return view('livewire', ['name' => 'answer-component']); })->name($table.'.edit');
-		Route::get($table, function () { return view('livewire', ['name' => 'answer-component']); })->name('answers.index');
-	});
-	Route::group(['middleware' => ['permission:chatlogs_access']], function () {
-		$table  = 'chatlogs';
-	    // Route::get($table.'/create', function () { return view('livewire', ['name' => 'chatlog-component']); })->name($table.'.create');
-	    // Route::get($table.'/{id}', function () { return view('livewire', ['name' => 'chatlog-component']); })->name($table.'.show');
-	    // Route::get($table.'/{id}/edit', function () { return view('livewire', ['name' => 'chatlog-component']); })->name($table.'.edit');
-		Route::get($table, function () { return view('livewire', ['name' => 'chatlog-component']); })->name('chatlogs.index');
-	});
-	Route::group(['middleware' => ['permission:bots_access']], function () {
-		$table  = 'bots';
-	    Route::get($table.'/create', function () { return view('livewire', ['name' => 'bot-component']); })->name($table.'.create');
-	    Route::get($table.'/{id}', function () { return view('livewire', ['name' => 'bot-component']); })->name($table.'.show');
-	    Route::get($table.'/{id}/edit', function () { return view('livewire', ['name' => 'bot-component']); })->name($table.'.edit');
-		Route::get($table, function () { return view('livewire', ['name' => 'bot-component']); })->name('bots.index');
-	});
-	Route::group(['middleware' => ['permission:questions_access']], function () {
-		$table  = 'questions';
-	    Route::get($table.'/create', function () { return view('livewire', ['name' => 'question-component']); })->name($table.'.create');
-	    Route::get($table.'/{id}', function () { return view('livewire', ['name' => 'question-component']); })->name($table.'.show');
-	    Route::get($table.'/{id}/edit', function () { return view('livewire', ['name' => 'question-component']); })->name($table.'.edit');
-		Route::get($table, function () { return view('livewire', ['name' => 'question-component']); })->name('questions.index');
-	});
-	Route::group(['middleware' => ['permission:questionlanguages_access']], function () {
-		$table  = 'questionlanguages';
-	    Route::get($table.'/create', function () { return view('livewire', ['name' => 'questionlanguage-component']); })->name($table.'.create');
-	    Route::get($table.'/{id}', function () { return view('livewire', ['name' => 'questionlanguage-component']); })->name($table.'.show');
-	    Route::get($table.'/{id}/edit', function () { return view('livewire', ['name' => 'questionlanguage-component']); })->name($table.'.edit');
-		Route::get($table, function () { return view('livewire', ['name' => 'questionlanguage-component']); })->name('questionlanguages.index');
-	});
-	Route::group(['middleware' => ['permission:botmessages_access']], function () {
-		$table  = 'botmessages';
-	    Route::get($table.'/create', function () { return view('livewire', ['name' => 'botmessage-component']); })->name($table.'.create');
-	    Route::get($table.'/{id}', function () { return view('livewire', ['name' => 'botmessage-component']); })->name($table.'.show');
-	    Route::get($table.'/{id}/edit', function () { return view('livewire', ['name' => 'botmessage-component']); })->name($table.'.edit');
-		Route::get($table, function () { return view('livewire', ['name' => 'botmessage-component']); })->name('botmessages.index');
-	});
 });
